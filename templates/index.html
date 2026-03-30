@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品爬蟲搜尋</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 標題 -->
+        <header>
+            <h1>🔍 商品爬蟲搜尋</h1>
+            <p class="subtitle">一次搜尋多個電商平台，比價超方便！</p>
+        </header>
+
+        <!-- 搜尋區域 -->
+        <div class="search-box">
+            <form id="searchForm">
+                <div class="input-row">
+                    <input type="text" id="keyword" placeholder="輸入商品關鍵字，例如：藍牙耳機" required maxlength="100" autocomplete="off">
+                    <button type="submit" id="searchBtn">搜尋</button>
+                </div>
+
+                <div class="options-row">
+                    <label class="source-label">
+                        <input type="checkbox" name="sources" value="momo" checked>
+                        <span class="chip momo">momo</span>
+                    </label>
+                    <label class="source-label">
+                        <input type="checkbox" name="sources" value="pchome" checked>
+                        <span class="chip pchome">PChome</span>
+                    </label>
+                    <label class="source-label">
+                        <input type="checkbox" name="sources" value="books">
+                        <span class="chip books">博客來</span>
+                    </label>
+
+                    <div class="max-items">
+                        <label for="maxItems">每站上限</label>
+                        <select id="maxItems">
+                            <option value="10">10</option>
+                            <option value="20" selected>20</option>
+                            <option value="40">40</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- 狀態列 -->
+        <div id="status" class="status hidden"></div>
+
+        <!-- 排序 -->
+        <div id="sortBar" class="sort-bar hidden">
+            <span id="resultCount"></span>
+            <div class="sort-controls">
+                <button class="sort-btn active" data-sort="default">預設</button>
+                <button class="sort-btn" data-sort="price-asc">價格低→高</button>
+                <button class="sort-btn" data-sort="price-desc">價格高→低</button>
+            </div>
+        </div>
+
+        <!-- 結果區 -->
+        <div id="results" class="results-grid"></div>
+    </div>
+
+    <footer>
+        <p>商品爬蟲搜尋 &copy; 2026 — 僅供學習研究使用</p>
+    </footer>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
