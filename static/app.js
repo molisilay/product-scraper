@@ -10,8 +10,12 @@ const countEl     = document.getElementById("resultCount");
 const filterBar   = document.getElementById("filterBar");
 const priceMinEl  = document.getElementById("priceMin");
 const priceMaxEl  = document.getElementById("priceMax");
+const reviewMinEl = document.getElementById("reviewMin");
+const oneStarMaxEl= document.getElementById("oneStarMax");
+const salesMinEl  = document.getElementById("salesMin");
 const filterBtn   = document.getElementById("filterBtn");
 const filterClear = document.getElementById("filterClear");
+const sourceFilterGroup = document.getElementById("sourceFilterGroup");
 const sourceStats = document.getElementById("sourceStats");
 const darkToggle  = document.getElementById("darkToggle");
 const backToTop   = document.getElementById("backToTop");
@@ -145,6 +149,10 @@ form.addEventListener("submit", async (e) => {
         filterBar.classList.remove("hidden");
         priceMinEl.value = "";
         priceMaxEl.value = "";
+        reviewMinEl.value = "";
+        oneStarMaxEl.value = "";
+        salesMinEl.value = "";
+        buildSourceFilterCheckboxes(currentProducts);
         resetSortButtons();
         renderProducts(currentProducts);
 
@@ -176,11 +184,16 @@ sortBar.addEventListener("click", (e) => {
     }
 });
 
-/* ---------- 價格篩選 ---------- */
+/* ---------- 價格 + 條件篩選（複選） ---------- */
 filterBtn.addEventListener("click", () => renderFiltered(getActiveSort()));
 filterClear.addEventListener("click", () => {
     priceMinEl.value = "";
     priceMaxEl.value = "";
+    reviewMinEl.value = "";
+    oneStarMaxEl.value = "";
+    salesMinEl.value = "";
+    // 勾回全部平台
+    sourceFilterGroup.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = true);
     renderFiltered(getActiveSort());
 });
 
@@ -192,10 +205,29 @@ function getActiveSort() {
 function renderFiltered(sortMode) {
     let filtered = [...currentProducts];
 
+    // 平台篩選（複選）
+    const checkedSources = [...sourceFilterGroup.querySelectorAll('input:checked')].map(cb => cb.value);
+    if (checkedSources.length > 0 && checkedSources.length < sourceFilterGroup.querySelectorAll('input').length) {
+        filtered = filtered.filter(p => checkedSources.includes(p.source));
+    }
+
+    // 價格區間
     const pMin = parseInt(priceMinEl.value, 10);
     const pMax = parseInt(priceMaxEl.value, 10);
     if (!isNaN(pMin)) filtered = filtered.filter(p => parsePrice(p.price) >= pMin);
     if (!isNaN(pMax)) filtered = filtered.filter(p => parsePrice(p.price) <= pMax);
+
+    // 評論數 ≥
+    const revMin = parseInt(reviewMinEl.value, 10);
+    if (!isNaN(revMin)) filtered = filtered.filter(p => (p.total_reviews ?? 0) >= revMin);
+
+    // 一星 ≤
+    const osMax = parseInt(oneStarMaxEl.value, 10);
+    if (!isNaN(osMax)) filtered = filtered.filter(p => (p.one_star_reviews ?? 0) <= osMax);
+
+    // 銷量 ≥
+    const sMin = parseInt(salesMinEl.value, 10);
+    if (!isNaN(sMin)) filtered = filtered.filter(p => (p.sales ?? 0) >= sMin);
 
     if (sortMode === "price-asc") {
         filtered.sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
@@ -250,6 +282,24 @@ function renderFiltered(sortMode) {
 function resetSortButtons() {
     sortBar.querySelectorAll(".sort-btn").forEach(b => b.classList.remove("active"));
     sortBar.querySelector('.sort-btn[data-sort="default"]').classList.add("active");
+}
+
+/* ---------- 平台篩選 checkbox 動態生成 ---------- */
+function buildSourceFilterCheckboxes(products) {
+    const sources = [...new Set(products.map(p => p.source))];
+    const colorMap = {
+        "momo": "momo", "PChome": "pchome", "博客來": "books",
+        "蝦皮": "shopee", "拼多多": "pinduoduo",
+    };
+    sourceFilterGroup.innerHTML = sources.map(s => {
+        const cls = colorMap[s] || "other";
+        return `<label class="source-filter-label">
+            <input type="checkbox" value="${escapeHtml(s)}" checked>
+            <span class="chip-sm ${cls}">${escapeHtml(s)}</span>
+        </label>`;
+    }).join("");
+    // 點選即時篩選
+    sourceFilterGroup.addEventListener("change", () => renderFiltered(getActiveSort()));
 }
 
 /* ---------- 渲染商品卡片 ---------- */

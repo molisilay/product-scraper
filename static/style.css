@@ -25,6 +25,7 @@ body.dark .product-card .img-wrap { background: #0f172a; }
 body.dark .product-card .name { color: #e2e8f0; }
 body.dark .filter-bar { background: rgba(30,41,59,.8); }
 body.dark .filter-bar input { background: #0f172a; border-color: #334155; color: #e0e0e0; }
+body.dark .filter-actions { border-top-color: rgba(255,255,255,.08); }
 body.dark .history-dropdown { background: #1e293b; border-color: #334155; }
 body.dark .history-item:hover { background: #334155; }
 
@@ -242,20 +243,59 @@ header h1 {
 .sort-btn.active, .view-btn.active { background: rgba(255,255,255,.55); font-weight: 700; color: #333; }
 .separator { color: rgba(255,255,255,.4); margin: 0 .2rem; }
 
-/* ===== 價格篩選列 ===== */
+/* ===== 篩選列 ===== */
 .filter-bar {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: .5rem;
     background: rgba(255,255,255,.12);
-    padding: .5rem 1rem;
+    padding: .7rem 1rem;
     border-radius: 10px;
     margin-bottom: 1rem;
     color: #fff;
     font-size: .88rem;
-    flex-wrap: wrap;
     transition: background .4s;
 }
+.filter-section {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    flex-wrap: wrap;
+}
+.filter-section label {
+    white-space: nowrap;
+    font-weight: 600;
+    font-size: .84rem;
+}
+.filter-actions {
+    border-top: 1px solid rgba(255,255,255,.15);
+    padding-top: .5rem;
+}
+.source-filter-group {
+    display: flex;
+    gap: .4rem;
+    flex-wrap: wrap;
+}
+.source-filter-label {
+    cursor: pointer;
+}
+.source-filter-label input { display: none; }
+.chip-sm {
+    display: inline-block;
+    padding: .2rem .6rem;
+    border-radius: 14px;
+    font-size: .78rem;
+    font-weight: 600;
+    border: 2px solid rgba(255,255,255,.3);
+    color: rgba(255,255,255,.6);
+    transition: all .2s;
+}
+.source-filter-label input:checked + .chip-sm.momo      { background: #e91e63; color:#fff; border-color:#e91e63; }
+.source-filter-label input:checked + .chip-sm.pchome    { background: #1976d2; color:#fff; border-color:#1976d2; }
+.source-filter-label input:checked + .chip-sm.shopee    { background: #ee4d2d; color:#fff; border-color:#ee4d2d; }
+.source-filter-label input:checked + .chip-sm.pinduoduo { background: #e02e24; color:#fff; border-color:#e02e24; }
+.source-filter-label input:checked + .chip-sm.books     { background: #43a047; color:#fff; border-color:#43a047; }
+.source-filter-label input:checked + .chip-sm.other     { background: #757575; color:#fff; border-color:#757575; }
 .filter-bar input[type="number"] {
     width: 90px;
     padding: .3rem .5rem;

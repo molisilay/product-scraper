@@ -82,13 +82,29 @@
 
         <!-- 價格篩選 -->
         <div id="filterBar" class="filter-bar hidden">
-            <label>價格區間：</label>
-            <input type="number" id="priceMin" placeholder="最低" min="0">
-            <span>～</span>
-            <input type="number" id="priceMax" placeholder="最高" min="0">
-            <button id="filterBtn" class="filter-apply-btn">套用</button>
-            <button id="filterClear" class="filter-clear-btn">清除</button>
-            <span id="sourceStats" class="source-stats"></span>
+            <div class="filter-section">
+                <label>平台篩選：</label>
+                <div id="sourceFilterGroup" class="source-filter-group"></div>
+            </div>
+            <div class="filter-section">
+                <label>價格區間：</label>
+                <input type="number" id="priceMin" placeholder="最低" min="0">
+                <span>～</span>
+                <input type="number" id="priceMax" placeholder="最高" min="0">
+            </div>
+            <div class="filter-section">
+                <label>評論數 ≥</label>
+                <input type="number" id="reviewMin" placeholder="不限" min="0">
+                <label>一星 ≤</label>
+                <input type="number" id="oneStarMax" placeholder="不限" min="0">
+                <label>銷量 ≥</label>
+                <input type="number" id="salesMin" placeholder="不限" min="0">
+            </div>
+            <div class="filter-section filter-actions">
+                <button id="filterBtn" class="filter-apply-btn">套用篩選</button>
+                <button id="filterClear" class="filter-clear-btn">清除全部</button>
+                <span id="sourceStats" class="source-stats"></span>
+            </div>
         </div>
 
         <!-- 結果區 -->
