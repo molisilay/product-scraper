@@ -11,14 +11,18 @@
         <!-- 標題 -->
         <header>
             <h1>🔍 商品爬蟲搜尋</h1>
-            <p class="subtitle">一次搜尋多個電商平台，比價超方便！</p>
+            <p class="subtitle">一次搜尋多個電商平台，比價＋比評論超方便！</p>
+            <button id="darkToggle" class="dark-toggle" title="切換深色模式">🌙</button>
         </header>
 
         <!-- 搜尋區域 -->
         <div class="search-box">
             <form id="searchForm">
                 <div class="input-row">
-                    <input type="text" id="keyword" placeholder="輸入商品關鍵字，例如：藍牙耳機" required maxlength="100" autocomplete="off">
+                    <div class="input-wrapper">
+                        <input type="text" id="keyword" placeholder="輸入商品關鍵字，例如：藍牙耳機" required maxlength="100" autocomplete="off">
+                        <div id="historyDropdown" class="history-dropdown hidden"></div>
+                    </div>
                     <button type="submit" id="searchBtn">搜尋</button>
                 </div>
 
@@ -30,6 +34,14 @@
                     <label class="source-label">
                         <input type="checkbox" name="sources" value="pchome" checked>
                         <span class="chip pchome">PChome</span>
+                    </label>
+                    <label class="source-label">
+                        <input type="checkbox" name="sources" value="shopee" checked>
+                        <span class="chip shopee">蝦皮</span>
+                    </label>
+                    <label class="source-label">
+                        <input type="checkbox" name="sources" value="pinduoduo">
+                        <span class="chip pinduoduo">拼多多</span>
                     </label>
                     <label class="source-label">
                         <input type="checkbox" name="sources" value="books">
@@ -51,18 +63,39 @@
         <!-- 狀態列 -->
         <div id="status" class="status hidden"></div>
 
-        <!-- 排序 -->
+        <!-- 排序 + 篩選列 -->
         <div id="sortBar" class="sort-bar hidden">
             <span id="resultCount"></span>
             <div class="sort-controls">
                 <button class="sort-btn active" data-sort="default">預設</button>
                 <button class="sort-btn" data-sort="price-asc">價格低→高</button>
                 <button class="sort-btn" data-sort="price-desc">價格高→低</button>
+                <button class="sort-btn review-sort" data-sort="review-best" title="一星最少 + 銷量/評論多優先">⭐ 評論最優</button>
+                <button class="sort-btn" data-sort="one-star-asc">一星少→多</button>
+                <button class="sort-btn" data-sort="reviews-desc">評論多→少</button>
+                <button class="sort-btn" data-sort="sales-desc">銷量多→少</button>
+                <span class="separator">|</span>
+                <button class="view-btn active" data-view="grid" title="格狀檢視">▦</button>
+                <button class="view-btn" data-view="list" title="列表檢視">☰</button>
             </div>
+        </div>
+
+        <!-- 價格篩選 -->
+        <div id="filterBar" class="filter-bar hidden">
+            <label>價格區間：</label>
+            <input type="number" id="priceMin" placeholder="最低" min="0">
+            <span>～</span>
+            <input type="number" id="priceMax" placeholder="最高" min="0">
+            <button id="filterBtn" class="filter-apply-btn">套用</button>
+            <button id="filterClear" class="filter-clear-btn">清除</button>
+            <span id="sourceStats" class="source-stats"></span>
         </div>
 
         <!-- 結果區 -->
         <div id="results" class="results-grid"></div>
+
+        <!-- 回到頂部 -->
+        <button id="backToTop" class="back-to-top hidden" title="回到頂部">↑</button>
     </div>
 
     <footer>
